@@ -6,7 +6,7 @@ var logger = require('morgan');
 
 // MongoDB connection setup
 const mongoose = require('mongoose');
-require('dotenv').config(); 
+const dotenv = require('dotenv').config(); 
 
 mongoose.connect(process.env.DATABASE, {
   useNewUrlParser: true,
@@ -21,9 +21,6 @@ mongoose.connect(process.env.DATABASE, {
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var productRoutes = require('./routes/productRoutes'); // Import product routes
-var ProductController = require('./controllers/ProductController'); // Import ProductController
-var ProductModel = require('./models/ProductModel'); // Import ProductModel
-
 
 var app = express();
 
