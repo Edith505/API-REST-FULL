@@ -29,8 +29,14 @@ module.exports = {
     // Crée un nouveau produit
     create: async (req, res) => {
         try {
-            const productObj = req.body;
-            // Si fichier image envoyé, on construit son URL publique
+            let productObj;
+            try {
+                productObj = req.body.product ? JSON.parse(req.body.product) : req.body;
+            } catch (err) {
+                return res.status(400).json({ message: "Le champ product n'est pas un JSON valide." });
+            }
+            delete productObj._id;
+            delete productObj.__v;
             if (req.file) {
                 productObj.image = `${req.protocol}://${req.get('host')}/images/products/${req.file.filename}`;
             }
@@ -45,11 +51,19 @@ module.exports = {
     // Modifie un produit existant
     update: async (req, res) => {
         try {
+            let productObj;
+            try {
+                productObj = req.body.product ? JSON.parse(req.body.product) : req.body;
+            } catch (err) {
+                return res.status(400).json({ message: "Le champ product n'est pas un JSON valide." });
+            }
+            delete productObj._id;
+            delete productObj.__v;
             const product = await ProductModel.findById(req.params.id);
             if (!product) {
                 return res.status(404).json({ message: 'Product not found' });
             }
-            // Si nouvelle image : suppression de l'ancienne
+            // Si nouvelle image : suppression de l’ancienne
             if (req.file) {
                 if (product.image) {
                     const filename = product.image.split('/images/products/')[1];
@@ -58,10 +72,9 @@ module.exports = {
                         if (err) console.error('Error deleting old image:', err);
                     });
                 }
-                req.body.image = `${req.protocol}://${req.get('host')}/images/products/${req.file.filename}`;
+                productObj.image = `${req.protocol}://${req.get('host')}/images/products/${req.file.filename}`;
             }
-            // Mise à jour des champs
-            Object.assign(product, req.body);
+            Object.assign(product, productObj);
             const updatedProduct = await product.save();
             res.status(200).json(updatedProduct);
         } catch (error) {
