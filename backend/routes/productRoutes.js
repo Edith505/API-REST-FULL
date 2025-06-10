@@ -1,13 +1,16 @@
 var express = require('express');
 const ProductController = require('../controllers/ProductController');
+const productImageUpload = require('../middlewares/productImageUpload');
+
 var router = express.Router();
 
 router.get('/', ProductController.list);
+
 router.get('/:id', ProductController.show);
 
-router.post('/', ProductController.create);
+router.post('/', productImageUpload, ProductController.create);
 
-router.put('/:id', ProductController.update);
+router.put('/:id', productImageUpload, ProductController.update);
 
 router.delete('/:id', ProductController.delete);
 

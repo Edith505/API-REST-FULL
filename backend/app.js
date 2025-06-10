@@ -37,6 +37,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/images/products', express.static('public/images/products'));
 app.use('/api/products', productRoutes); // Use product routes
 
 // catch 404 and forward to error handler
