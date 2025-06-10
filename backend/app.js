@@ -20,6 +20,10 @@ mongoose.connect(process.env.DATABASE, {
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var productRoutes = require('./routes/productRoutes'); // Import product routes
+var ProductController = require('./controllers/ProductController'); // Import ProductController
+var ProductModel = require('./models/ProductModel'); // Import ProductModel
+
 
 var app = express();
 
@@ -32,6 +36,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/api/products', productRoutes); // Use product routes
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

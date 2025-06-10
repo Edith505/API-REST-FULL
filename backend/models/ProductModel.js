@@ -6,11 +6,6 @@ const productSchema = new Schema({
     required: true,
     trim: true
   },
-  firstname: {
-    type: String,
-    required: true,
-    trim: true
-  },
   description: {
     type: String,
     required: true,
