@@ -1,18 +1,19 @@
 var express = require('express');
 const ProductController = require('../controllers/ProductController');
 const productImageUpload = require('../middlewares/productImageUpload');
+const auth = require('../middlewares/auth');
 
 var router = express.Router();
 
-router.get('/', ProductController.list);
+router.get('/',auth, ProductController.list);
 
-router.get('/:id', ProductController.show);
+router.get('/:id',auth, ProductController.show);
 
-router.post('/', productImageUpload, ProductController.create);
+router.post('/', productImageUpload,auth, ProductController.create);
 
-router.put('/:id', productImageUpload, ProductController.update);
+router.put('/:id', productImageUpload,auth, ProductController.update);
 
-router.delete('/:id', ProductController.delete);
+router.delete('/:id',auth, ProductController.delete);
 
 
 module.exports = router;
